@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using CsvHelper;
 using CsvHelper.Configuration;
 using CsvHelper.Configuration.Attributes;
@@ -13,60 +14,45 @@ using CsvHelper.Configuration.Attributes;
 learned from: 
 https://joshclose.github.io/CsvHelper/getting-started/#reading-a-csv-file
 */
-
-
-using (var reader = new StreamReader("C:\\Users\\josha\\Documents\\GitHub\\csv-json\\PremierLeagueMatches.csv"))
-using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+public class Plswork
 {
-    csv.Context.RegisterClassMap<DataMap>();
-    csv.Read();
-    csv.ReadHeader();
- 
-    var record = csv.GetRecords<Data>().ToList();
- 
-    // Find matches with high xG difference
-    IEnumerable<Data> XGDifference = 
-        from match in record
-        where match.HomeXG > 1.5
-        select match;
-    
-    // Find matches with high scoring games
-    IEnumerable<Data> highScoringGames = 
-        from match in record
-        where (match.HomeScore + match.AwayScore) > 4
-        select match;
+    public static async Task Main(){
+        using (var reader = new StreamReader("C:\\Users\\josha\\Documents\\GitHub\\csv-json\\PremierLeagueMatches.csv"))
+        using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+        {
+            csv.Context.RegisterClassMap<DataMap>();
+            csv.Read();
+            csv.ReadHeader();
+        
+            var record = csv.GetRecords<Data>().ToList();
+        
+            // Find matches with high xG difference
+            IEnumerable<Data> XGDifference = 
+                from match in record
+                where match.HomeXG > 1.5
+                select match;
+            
+            // Find matches with high scoring games
+            IEnumerable<Data> highScoringGames = 
+                from match in record
+                where (match.HomeScore + match.AwayScore) > 4
+                select match;
 
-    // Find matches where the underdog won (based on xG)
-    IEnumerable<Data> underdogWins = 
-        from match in record
-        where match.HomeXG < match.AwayXG && match.HomeScore > match.AwayScore
-        select match;
-
-    // Find matches with high attendance
-    IEnumerable<Data> highAttendance = 
-        from match in record
-        where int.Parse(match.Attendance.Replace(",", "")) > 60000
-        select match;
+            // Find matches where the underdog won (based on xG)
+            IEnumerable<Data> underdogWins = 
+                from match in record
+                where match.HomeXG < match.AwayXG && match.HomeScore > match.AwayScore
+                select match;
 
 
-    // TODO
-    // Read System.Text.Json documentation
-    Console.WriteLine("Matches with high home xG (>1.5):");
-    foreach (var match in XGDifference)
-    {
-        Console.WriteLine($"{match.HomeTeam} vs {match.AwayTeam}: {match.HomeXG} xG");
-    }
-
-    Console.WriteLine("\nHigh scoring games (>4 goals):");
-    foreach (var match in highScoringGames) 
-    {
-        Console.WriteLine($"{match.HomeTeam} {match.HomeScore} - {match.AwayScore} {match.AwayTeam}");
-    }
-
-    Console.WriteLine("\nUnderdog wins (based on xG):");
-    foreach (var match in underdogWins)
-    {
-        Console.WriteLine($"{match.HomeTeam} {match.HomeScore}-{match.AwayScore} {match.AwayTeam} (xG: {match.HomeXG}-{match.AwayXG})");
+            // TODO
+            // Read System.Text.Json documentation
+            string filename = "C:\\Users\\josha\\Documents\\GitHub\\csv-json\\plswork.json";
+            await using FileStream createStream = File.Create(filename);
+            await JsonSerializer.SerializeAsync(createStream, XGDifference);
+            await JsonSerializer.SerializeAsync(createStream, highScoringGames);
+            await JsonSerializer.SerializeAsync(createStream, underdogWins);
+        }
     }
 }
 
