@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "+DyVLKdraEs=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\josha\\Documents\\GitHub\\csv-json\\socceranalyser\\socceranalyser.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\josha\\.nuget\\packages\\csvhelper\\33.0.1\\csvhelper.33.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}

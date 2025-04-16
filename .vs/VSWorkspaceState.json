@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\socceranalyser",
+    "\\socceranalyser\\bin",
+    "\\socceranalyser\\bin\\Debug",
+    "\\socceranalyser\\bin\\Release",
+    "\\socceranalyser\\obj",
+    "\\socceranalyser\\obj\\Debug",
+    "\\socceranalyser\\obj\\Debug\\net8.0",
+    "\\socceranalyser\\obj\\Debug\\net8.0\\ref",
+    "\\socceranalyser\\obj\\Debug\\net8.0\\refint"
+  ],
+  "SelectedNode": "\\socceranalyser\\soccer.cs",
+  "PreviewInSolutionExplorer": false
+}
